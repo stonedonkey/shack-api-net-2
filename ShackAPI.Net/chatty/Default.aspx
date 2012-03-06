@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="chatty_Default" Codebehind="Default.aspx.cs" %>

@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="chat_Default" Codebehind="Default.aspx.cs" %>

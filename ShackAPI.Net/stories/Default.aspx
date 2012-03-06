@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="stories_Default" Codebehind="Default.aspx.cs" %>

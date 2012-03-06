@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Auth" Codebehind="Default.aspx.cs" %>

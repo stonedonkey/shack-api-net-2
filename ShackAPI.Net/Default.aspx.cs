@@ -26,6 +26,11 @@ namespace ShackAPI
         private int last_reply_id = 0;
         private OutputFormats outputFormat = OutputFormats.XML;
 
+        protected double pageStart = DateTime.Now.TimeOfDay.TotalMilliseconds;
+        protected double pageScraped;
+        protected double pageEnd;
+        protected bool usedGzip = false;
+        protected bool loadedSession = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,7 +62,10 @@ namespace ShackAPI
 
                 client.Method = "GET";
                 if (ShackUserContext.Current.CookieContainer == null)
+                {
+                    loadedSession = true;
                     HTTPManager.SetShackUserContext();
+                }
 
                 client.Cookies = ShackUserContext.Current.CookieContainer;
 
@@ -70,6 +78,7 @@ namespace ShackAPI
                     StreamReader reader;
                     if (!string.IsNullOrEmpty(contentEncoding) && contentEncoding.Contains("gzip"))
                     {
+                        usedGzip = true;
                         reader = new StreamReader(new GZipStream(response, CompressionMode.Decompress), Encoding.UTF8);
                     }
                     else
@@ -82,12 +91,15 @@ namespace ShackAPI
                 }
                 if (!shackHTML.Contains("/user/latestchatty/posts")) // if we lose session we have to reclaim it
                 {
+                  
                     HTTPManager.SetShackUserContext();
                     client.Cookies = ShackUserContext.Current.CookieContainer;
                     shackHTML = client.DownloadString(url);
                 }
             }
 
+
+            pageScraped = DateTime.Now.TimeOfDay.TotalMilliseconds;
 
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(shackHTML);
@@ -126,6 +138,8 @@ namespace ShackAPI
             if (doc.DocumentNode.SelectNodes("//div[starts-with(@class,'root')]") != null)
                 foreach (HtmlNode post in doc.DocumentNode.SelectNodes("//div[starts-with(@class,'root')]"))
                     ParsePost(post.InnerHtml);
+
+            pageEnd = DateTime.Now.TimeOfDay.TotalMilliseconds; 
 
             if (outputFormat == OutputFormats.XML)
                 ServePageAsXML();
@@ -236,6 +250,15 @@ namespace ShackAPI
             writer.Formatting = System.Xml.Formatting.Indented;
 
             writer.WriteStartDocument();
+
+            if (!string.IsNullOrEmpty(Request.QueryString["debug"]))
+            {
+                writer.WriteComment("Paged Scraped: " + (pageScraped - pageStart).ToString() + " ms");
+                writer.WriteComment("Total Parse: " + (pageEnd - pageScraped).ToString() + " ms");
+                writer.WriteComment("Total Render: " + (pageEnd - pageStart).ToString() + " ms");
+                writer.WriteComment("Used Gzip: " + usedGzip.ToString());
+                writer.WriteComment("Loaded Session: " + loadedSession.ToString());
+            }
             writer.WriteStartElement("comments");
 
             writer.WriteAttributeString("story_name", this.title);
@@ -269,9 +292,12 @@ namespace ShackAPI
                 writer.WriteStartElement("comments");
                 writer.WriteFullEndElement();
                 writer.WriteEndElement();
+
             }
 
             writer.WriteEndElement();
+
+            
             writer.WriteEndDocument();
 
             writer.Flush();

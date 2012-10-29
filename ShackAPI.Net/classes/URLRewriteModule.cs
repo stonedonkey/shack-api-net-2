@@ -194,12 +194,14 @@ namespace ShackApiNet.Modules
                 string author = HttpContext.Current.Request.QueryString["author"];
                 string parentAuthor = HttpContext.Current.Request.QueryString["parent_author"];
                 string terms = HttpContext.Current.Request.QueryString["terms"];
+                string page = HttpContext.Current.Request.QueryString["page"];
 
                 applicationInstance.Context.RewritePath(
-                    String.Format("~/search/Default.aspx?SearchTerm={0}&Author={1}&ParentAuthor={2}&version=2&json=true",
+                    String.Format("~/search/Default.aspx?SearchTerm={0}&Author={1}&ParentAuthor={2}&page={3}&version=2&json=true",
                     HttpContext.Current.Server.UrlEncode(terms),
                     HttpContext.Current.Server.UrlEncode(author),
-                    HttpContext.Current.Server.UrlEncode(parentAuthor)));
+                    HttpContext.Current.Server.UrlEncode(parentAuthor),
+                    HttpContext.Current.Server.UrlEncode(page)));
 
                 return;
             }
@@ -242,7 +244,7 @@ namespace ShackApiNet.Modules
             match = Regex.Match(url, "messages/([0-9].*).xml", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                applicationInstance.Context.RewritePath("~/messages/read/default.aspx?messageid=" + match.Groups[1].Value );
+                applicationInstance.Context.RewritePath("~/messages/read/default.aspx?messageid=" + match.Groups[1].Value);
                 return;
             }
             // ~/messages/{messageid}.json - mark read
@@ -282,10 +284,14 @@ namespace ShackApiNet.Modules
             match = Regex.Match(url, "messages.json(.*)", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                applicationInstance.Context.RewritePath("~/messages/default.aspx?&json=true&version=2");
+                string page = HttpContext.Current.Request.QueryString["page"];
+
+                applicationInstance.Context.RewritePath(
+                    String.Format("~/messages/default.aspx?&page={0}&json=true&version=2",
+                    HttpContext.Current.Server.UrlEncode(page)));
+
                 return;
             }
-
 
             // ~/index.xml
             match = Regex.Match(url, "index.xml", RegexOptions.IgnoreCase);
@@ -303,7 +309,7 @@ namespace ShackApiNet.Modules
                 applicationInstance.Context.RewritePath(String.Format("~/Default.aspx?storyid={0}", match.Groups[1].Value));
 
             // ~/story.json
-            match = Regex.Match(url, "([0-9].*).json", RegexOptions.IgnoreCase);
+            match = Regex.Match(url, "([0-9].*).json$", RegexOptions.IgnoreCase);
             if (match.Success)
                 applicationInstance.Context.RewritePath(String.Format("~/Default.aspx?storyid={0}&json=true", match.Groups[1].Value));
 

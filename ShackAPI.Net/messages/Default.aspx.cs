@@ -311,6 +311,7 @@ public partial class messages_Default : System.Web.UI.Page
         json.messages = results;
 
         json.user = _Username;
+        json.last_page = totalPages;
 
         string jsonPosts = js.Serialize(json);
 

@@ -8,6 +8,6 @@ public class JsonShackMessage
 
     public List<ShackMessage> messages {get;set;}
     public string user {get;set;}
-
+    public string last_page { get; set; }
 
 }

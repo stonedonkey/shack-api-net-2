@@ -157,7 +157,7 @@ public partial class search_default : System.Web.UI.Page
 
             //DateTime form = DateTime.Parse(datePosted);
             //Jun 05, 2009 9:21am PDT
-            DateTime form = DateTime.ParseExact(datePosted, "MMM dd, yyyy h:mmtt PDT" , CultureInfo.InvariantCulture);
+            DateTime form = DateTime.ParseExact(datePosted, "MMM dd, yyyy h:mmtt PDT", CultureInfo.InvariantCulture);
 
             if (string.IsNullOrEmpty(Request.QueryString["json"]))
                 datePosted = string.Format("{0:MMM dd, yyyy h:mmtt UTC}", form);
@@ -278,7 +278,7 @@ public partial class search_default : System.Web.UI.Page
         else
             json.author = Server.UrlEncode(author);
 
-        if (parent_author ==null || parent_author.Length == 0)
+        if (parent_author == null || parent_author.Length == 0)
             json.parent_author = null;
         else
             json.parent_author = Server.UrlEncode(parent_author);
@@ -288,6 +288,7 @@ public partial class search_default : System.Web.UI.Page
         else
             json.terms = Server.UrlEncode(searchTerms);
 
+        json.last_page = totalPages;
 
         string jsonPosts = js.Serialize(json);
 

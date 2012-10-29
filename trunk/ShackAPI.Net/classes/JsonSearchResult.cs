@@ -10,4 +10,5 @@ public class JsonSearchResult
     public string terms { get; set; }
     public string parent_author { get; set; }
     public string author { get; set; }
+    public string last_page { get; set; }
 }

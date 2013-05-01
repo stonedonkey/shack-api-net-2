@@ -54,7 +54,7 @@ public class HTTPManager
         try
         {
             NameValueCollection c = new NameValueCollection();
-            c.Add("user-identifier", "latestchatty");
+            c.Add("user-identifier", "shackapifix");
             c.Add("supplied-pass", "8675309");
             c.Add("get_fields[]", "result");
             c.Add("remember-login", "1");

@@ -27,7 +27,7 @@ public partial class Stories : System.Web.UI.Page
             client.Method = "GET";
 
             // lets try and do some gzippy stuff here
-            client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            //client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
             using (Stream response = client.OpenRead(url))
             {
                 string contentEncoding = client.ResponseHeaders["Content-Encoding"];

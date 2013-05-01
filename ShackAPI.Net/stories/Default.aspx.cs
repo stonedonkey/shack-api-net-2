@@ -47,7 +47,7 @@ public partial class stories_Default : System.Web.UI.Page
 
             client.Cookies = ShackUserContext.Current.CookieContainer;
             // lets try and do some gzippy stuff here
-            client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            //client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
             using (Stream response = client.OpenRead(url))
             {
                 string contentEncoding = client.ResponseHeaders["Content-Encoding"];
@@ -113,7 +113,7 @@ public partial class stories_Default : System.Web.UI.Page
 
                 client.Cookies = ShackUserContext.Current.CookieContainer;
                 // lets try and do some gzippy stuff here
-                client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                //client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
                 using (Stream response = client.OpenRead(url))
                 {
                     string contentEncoding = client.ResponseHeaders["Content-Encoding"];

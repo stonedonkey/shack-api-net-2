@@ -64,7 +64,7 @@ public partial class _Default : System.Web.UI.Page
 
             client.Cookies = ShackUserContext.Current.CookieContainer;
             // lets try and do some gzippy stuff here
-            client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            //client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
             using (Stream response = client.OpenRead(url))
             {
                 string contentEncoding = client.ResponseHeaders["Content-Encoding"];
@@ -76,7 +76,7 @@ public partial class _Default : System.Web.UI.Page
 
                 shackHTML = reader.ReadToEnd();
             }
-            if (!shackHTML.Contains("latestchatty")) // if we lose session we have to reclaim it
+            if (!shackHTML.Contains("shackapifix")) // if we lose session we have to reclaim it
             {
                 HTTPManager.SetShackUserContext();
                 client.Cookies = ShackUserContext.Current.CookieContainer;
@@ -105,7 +105,7 @@ public partial class _Default : System.Web.UI.Page
 
             client.Cookies = ShackUserContext.Current.CookieContainer;
             // lets try and do some gzippy stuff here
-            client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            //client.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
             using (Stream response = client.OpenRead(url))
             {
                 string contentEncoding = client.ResponseHeaders["Content-Encoding"];
@@ -117,7 +117,7 @@ public partial class _Default : System.Web.UI.Page
 
                 postBodies = reader.ReadToEnd();
             }
-            if (!shackHTML.Contains("latestchatty")) // if we lose session we have to reclaim it
+            if (!shackHTML.Contains("shackapifix")) // if we lose session we have to reclaim it
             {
                 HTTPManager.SetShackUserContext();
                 client.Cookies = ShackUserContext.Current.CookieContainer;

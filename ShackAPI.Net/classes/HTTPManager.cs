@@ -56,7 +56,7 @@ public class HTTPManager
             NameValueCollection c = new NameValueCollection();
             c.Add("user-identifier", "latestchatty");
             c.Add("supplied-pass", "8675309");
-            c.Add("get_fields%5B%5D", "result");
+            c.Add("get_fields[]", "result");
             c.Add("remember-login", "1");
 
             // get_fields%5B%5D=result&user-identifier=USERNAME&supplied-pass=PASSWORD&remember-login=1 

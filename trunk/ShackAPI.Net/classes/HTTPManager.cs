@@ -7,6 +7,8 @@ using ICSharpCode.SharpZipLib.GZip;
 using System.IO;
 using System.Collections.Specialized;
 using System.Text;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 
 /// <summary>
@@ -39,27 +41,34 @@ public class HTTPManager
     }
     public static void SetShackUserContext()
     {
+
         WebClientExtended client = new WebClientExtended();
         CookieContainer cc = new CookieContainer();
         client.Method = "POST";
         client.Headers["User-Agent"] = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729; .NET4.0E)";
-        //client.Headers["x-requested-with"] = "XMLHttpRequest";
-        //client.Headers["Referer"] = "http://www.shacknews.com";
+        client.Headers["X-Requested-With"] = "XMLHttpRequest";
+        //client.Headers["Content-Type"] = "application/x-www-form-urlencoded";
+        //client.Headers["Referer"] = "https://www.shacknews.com/login/login";
+        
 
         try
         {
             NameValueCollection c = new NameValueCollection();
-            c.Add("email", "latestchatty");
-            c.Add("password", "8675309");
-            c.Add("login", "login");
-            
+            c.Add("user-identifier", "latestchatty");
+            c.Add("supplied-pass", "8675309");
+            c.Add("get_fields%5B%5D", "result");
+            c.Add("remember-login", "1");
+
+            // get_fields%5B%5D=result&user-identifier=USERNAME&supplied-pass=PASSWORD&remember-login=1 
+
             client.Cookies = cc;
 
-            string urlCookie = "http://www.shacknews.com/";
+            string urlCookie = "https://www.shacknews.com/account/signin";
+            
             Byte[] webResponse = client.UploadValues(urlCookie, "POST", c);
             String result = Encoding.ASCII.GetString(webResponse);
 
-            if (result.Contains("/user/latestchatty/posts"))
+            if (result.Contains("{\"result\":{\"valid\":\"true\""))
             {
                 ShackUserContext.Current.CookieContainer = client.Cookies;
                 return;               

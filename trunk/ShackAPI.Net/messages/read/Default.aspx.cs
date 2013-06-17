@@ -18,6 +18,7 @@ public partial class messages_read_Default : System.Web.UI.Page
         CookieContainer cc = new CookieContainer();
         client.Method = "POST";
         client.Headers["User-Agent"] = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729; .NET4.0E)";
+        client.Headers["X-Requested-With"] = "XMLHttpRequest";
 
         string username = "";
         string password = "";
@@ -67,15 +68,20 @@ public partial class messages_read_Default : System.Web.UI.Page
         try
         {
             NameValueCollection c = new NameValueCollection();
-            c.Add("email", username);
-            c.Add("password", password);
-            c.Add("login", "login");
+            //c.Add("email", _Username);
+            //c.Add("password", password);
+            //c.Add("login", "login");
+            c.Add("user-identifier", username);
+            c.Add("supplied-pass", password);
+            c.Add("get_fields[]", "result");
+            c.Add("remember-login", "1");
+
             client.Cookies = cc;
-            string urlCookie = "http://www.shacknews.com/";
+            string urlCookie = "http://www.shacknews.com/account/signin";
             Byte[] webResponse = client.UploadValues(urlCookie, "POST", c);
             String result = Encoding.UTF8.GetString(webResponse);
 
-            if (result.Contains("ERROR: Login failed - Username or password is incorrect"))
+            if (!result.Contains("{\"status\":\"OK\""))
             {
                 Response.Write("error_login_failed");
                 return;
@@ -87,15 +93,14 @@ public partial class messages_read_Default : System.Web.UI.Page
             return;
         }
 
-        String URL = "http://www.shacknews.com/messages/read"; 
+        String URL = "http://www.shacknews.com/messages/read";
 
         try
         {
             NameValueCollection m = new NameValueCollection();
             m.Add("mid", messageid);
 
-            client.Headers["X-Requested-With"] = "XMLHttpRequest";
-
+            client.Headers.Remove("X-Requested-With");
             // load the HTML from the shack
             Byte[] postResponse = client.UploadValues(URL, "POST", m);
             string result = Encoding.UTF8.GetString(postResponse);

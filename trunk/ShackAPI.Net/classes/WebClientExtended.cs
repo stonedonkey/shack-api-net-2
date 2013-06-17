@@ -27,7 +27,7 @@ public class WebClientExtended : WebClient
                 myContainer = new CookieContainer();
             }
 
-          
+
 
             return myContainer;
         }
@@ -47,7 +47,7 @@ public class WebClientExtended : WebClient
         if ((login != null && login.Length > 0) && password != null && password.Length > 0)
             cache.Add(address, "Basic", new NetworkCredential(login, password));
         else
-            cache.Add(address, "Basic", new NetworkCredential("latestchatty", "8675309"));
+            cache.Add(address, "Basic", new NetworkCredential("shackapifix", "8675309"));
 
         myRequest.Credentials = cache;
 

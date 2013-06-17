@@ -50,22 +50,27 @@ public partial class messages_Default : System.Web.UI.Page
         CookieContainer cc = new CookieContainer();
         client.Method = "POST";
         client.Headers["User-Agent"] = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 ( .NET CLR 3.5.30729; .NET4.0E)";
+        client.Headers["X-Requested-With"] = "XMLHttpRequest";
 
         try
         {
 
 
             NameValueCollection c = new NameValueCollection();
-            c.Add("email", _Username);
-            c.Add("password", password);
-            c.Add("login", "login");
+            //c.Add("email", _Username);
+            //c.Add("password", password);
+            //c.Add("login", "login");
+            c.Add("user-identifier", _Username);
+            c.Add("supplied-pass", password);
+            c.Add("get_fields[]", "result");
+            c.Add("remember-login", "1");
 
             client.Cookies = cc;
-            string urlCookie = "http://www.shacknews.com/";
+            string urlCookie = "http://www.shacknews.com/account/signin";
             Byte[] webResponse = client.UploadValues(urlCookie, "POST", c);
             String result = Encoding.UTF8.GetString(webResponse);
 
-            if (!result.Contains("<li class=\"user light\">"))
+            if (!result.Contains("{\"status\":\"OK\""))
             {
                 Response.Write("error_login_failed");
                 return;
@@ -98,6 +103,8 @@ public partial class messages_Default : System.Web.UI.Page
             URL = string.Format("http://www.shacknews.com/messages/inbox?page={0}", shackPage); // inbox
         try
         {
+            client.Method = "GET";
+            client.Headers.Remove("X-Requested-With");
             // load the HTML from the shack
             shackHTML = client.DownloadString(URL);
         }

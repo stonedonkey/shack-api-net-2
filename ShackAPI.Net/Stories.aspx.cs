@@ -107,11 +107,13 @@ public partial class Stories : System.Web.UI.Page
         }
         catch { } // failed getting url
 
-        store.body = doc.DocumentNode.SelectSingleNode("//div[@class='summary']").InnerHtml.Replace("\r", "").Replace("\n", "").Replace("\t","").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
+        store.body = doc.DocumentNode.SelectSingleNode("//div[@class='summary']").InnerHtml.Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
         store.body = store.body.Replace("<script type=\"text/javascript\">", "<script type=\"text/javascript\"><![CDATA[");
         store.body = store.body.Replace("</script>", "]]></script>");
 
         store.preview = doc.DocumentNode.SelectSingleNode("//div[@class='summary']").InnerText.Trim();
+
+        store.thread_id = "";
 
         posts.Add(store);
 
@@ -180,6 +182,10 @@ public partial class Stories : System.Web.UI.Page
 
             writer.WriteStartElement("date");
             writer.WriteValue(item.date);
+            writer.WriteFullEndElement();
+
+            writer.WriteStartElement("thread-id");
+            writer.WriteValue(item.thread_id);
             writer.WriteFullEndElement();
 
             writer.WriteFullEndElement();

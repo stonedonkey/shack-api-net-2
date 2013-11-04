@@ -15,5 +15,6 @@ public class ShackStory
     public string name { get; set; }
     public string preview { get; set; }
     public string url { get; set; }
+    public string thread_id { get; set; }
 
 }

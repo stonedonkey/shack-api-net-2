@@ -87,6 +87,15 @@ public partial class stories_Default : System.Web.UI.Page
             store.comment_count = "0";
         }
 
+        try
+        {
+            store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+        }
+        catch
+        {
+            store.thread_id = "";
+        }
+
         store.id = storyID;
 
 
@@ -152,6 +161,15 @@ public partial class stories_Default : System.Web.UI.Page
                 store.comment_count = "0";
             }
 
+            try
+            {
+                store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+            }
+            catch
+            {
+                store.thread_id = "";
+            }
+
             Response.ContentType = "text/xml";
 
             Encoding utf8 = new UTF8Encoding(false);
@@ -189,6 +207,10 @@ public partial class stories_Default : System.Web.UI.Page
             writer.WriteValue(store.preview);
             writer.WriteEndElement();
 
+            writer.WriteStartElement("thread-id");
+            writer.WriteValue(store.thread_id);
+            writer.WriteEndElement();
+
             writer.WriteEndElement();
             writer.WriteEndDocument();
             writer.Flush();
@@ -201,7 +223,7 @@ public partial class stories_Default : System.Web.UI.Page
 
             throw new Exception("Error parsing this story id");
 
-          
+
         }
 
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -191,7 +191,7 @@ public partial class _Default : System.Web.UI.Page
         if (doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]") != null)
         {
             modmarker = doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]").GetAttributeValue("class", "").ToString();
-            modmarker = modmarker.Substring(15);
+            modmarker = modmarker.Substring(18);
             modmarker = modmarker.Substring(0, modmarker.IndexOf(" "));
             sp.category = modmarker;
 

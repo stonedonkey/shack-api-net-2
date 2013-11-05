@@ -27,7 +27,7 @@ public class WebClientExtended : WebClient
                 myContainer = new CookieContainer();
             }
 
-
+          
 
             return myContainer;
         }

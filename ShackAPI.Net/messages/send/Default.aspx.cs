@@ -127,10 +127,10 @@ public partial class messages_send_Default : System.Web.UI.Page
             post.Add("subject", subject);
             post.Add("to", to);
             string urlPost = "http://www.shacknews.com/messages/send";
-            Byte[] postResponse = client.UploadValues(urlPost, "POST", post);
+            Byte[] postResponse = client.UploadValues(urlPost,"POST", post);
             string result = Encoding.UTF8.GetString(postResponse);
 
-            if (version == 2)
+            if (version ==2)
                 Response.Write("Message Sent!");
 
         }
@@ -145,6 +145,6 @@ public partial class messages_send_Default : System.Web.UI.Page
 
     }
 
-
+     
 
 }

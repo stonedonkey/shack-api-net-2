@@ -119,7 +119,7 @@ public partial class post_Default : System.Web.UI.Page
                     contentTypeID = "2";
 
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 string fail = ex.Message;
                 // we'll try to post anyways, it should work most times than not.

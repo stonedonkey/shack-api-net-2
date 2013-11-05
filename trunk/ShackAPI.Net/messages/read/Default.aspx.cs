@@ -93,7 +93,7 @@ public partial class messages_read_Default : System.Web.UI.Page
             return;
         }
 
-        String URL = "http://www.shacknews.com/messages/read";
+        String URL = "http://www.shacknews.com/messages/read"; 
 
         try
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -80,7 +80,7 @@ public partial class chat_Default : System.Web.UI.Page
         post.preview = preview;
 
         string modmarker = doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]").GetAttributeValue("class", "").ToString();
-        modmarker = modmarker.Substring(15);
+        modmarker = modmarker.Substring(18);
         modmarker = modmarker.Substring(0, modmarker.IndexOf(" "));
         post.category = modmarker;
 

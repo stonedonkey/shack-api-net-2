@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -173,7 +173,7 @@ namespace ShackAPI
 
             // get post categeroy
             string modmarker = doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]").GetAttributeValue("class", "").ToString();
-            modmarker = modmarker.Substring(15);
+            modmarker = modmarker.Substring(18);
             modmarker = modmarker.Substring(0, modmarker.IndexOf(" "));
             sp.category = modmarker;
 

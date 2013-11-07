@@ -191,7 +191,7 @@ public partial class _Default : System.Web.UI.Page
         if (doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]") != null)
         {
             modmarker = doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]").GetAttributeValue("class", "").ToString();
-            modmarker = modmarker.Substring(18);
+            modmarker = modmarker.Substring(modmarker.IndexOf("mod_") + 4);
             modmarker = modmarker.Substring(0, modmarker.IndexOf(" "));
             sp.category = modmarker;
 
@@ -207,7 +207,7 @@ public partial class _Default : System.Web.UI.Page
         else
         {
             modmarker = doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'oneline ')]").GetAttributeValue("class", "").ToString();
-            modmarker = modmarker.Substring(modmarker.IndexOf("olmod_") + 6);
+            modmarker = modmarker.Substring(modmarker.IndexOf("mod_") + 4);
             modmarker = modmarker.Substring(0, modmarker.IndexOf(" "));
             sp.category = modmarker;
         }

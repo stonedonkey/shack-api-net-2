@@ -1,4 +1,4 @@
-﻿﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,9 +21,14 @@ public partial class search_default : System.Web.UI.Page
     private string totalResults = "0";
     private string author = "";
     private string parent_author = "";
+    private OutputFormats outputFormat = OutputFormats.XML;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (string.IsNullOrEmpty(Request.QueryString["json"]))
+            outputFormat = OutputFormats.XML;
+        else
+            outputFormat = OutputFormats.JSON;
 
         Response.Expires = 0;
 
@@ -147,32 +152,34 @@ public partial class search_default : System.Web.UI.Page
         sr.story_name = "LatestChatty";
 
         String datePosted = doc.DocumentNode.SelectSingleNode("//span[@class='postdate']").InnerText;
+        datePosted = datePosted.Replace("Posted ", "");
+        sr.date = Helpers.FormatShackDate(datePosted, outputFormat);
+        
+        //try
+        //{
+        //    datePosted = datePosted.Replace("Posted ", "");
+        //    datePosted = datePosted.Replace(" UTC", "");
+        //    //datePosted = datePosted.Replace(" PST", "");
+        //    //datePosted = datePosted.Replace(" PDT", "");
 
-        try
-        {
-            datePosted = datePosted.Replace("Posted ", "");
-            datePosted = datePosted.Replace(" UTC", "");
-            datePosted = datePosted.Replace(" PST", "");
-            //datePosted = datePosted.Replace(" PDT", "");
+        //    //DateTime form = DateTime.Parse(datePosted);
+        //    //Jun 05, 2009 9:21am PDT
+        //    DateTime form = DateTime.ParseExact(datePosted, "MMM dd, yyyy h:mmtt PDT", CultureInfo.InvariantCulture);
 
-            //DateTime form = DateTime.Parse(datePosted);
-            //Jun 05, 2009 9:21am PDT
-            DateTime form = DateTime.ParseExact(datePosted, "MMM dd, yyyy h:mmtt PDT", CultureInfo.InvariantCulture);
-
-            if (string.IsNullOrEmpty(Request.QueryString["json"]))
-                datePosted = string.Format("{0:MMM dd, yyyy h:mmtt UTC}", form);
+        //    if (string.IsNullOrEmpty(Request.QueryString["json"]))
+        //        datePosted = string.Format("{0:MMM dd, yyyy h:mmtt UTC}", form);
 
 
-            datePosted = Regex.Replace(datePosted, "AM", "am");
-            datePosted = Regex.Replace(datePosted, "PM", "pm");
-            sr.date = datePosted;
+        //    datePosted = Regex.Replace(datePosted, "AM", "am");
+        //    datePosted = Regex.Replace(datePosted, "PM", "pm");
+        //    sr.date = datePosted;
 
-        }
-        catch (Exception ex)
-        {
-            string error = ex.Message;
+        //}
+        //catch (Exception ex)
+        //{
+        //    string error = ex.Message;
 
-        }
+        //}
 
         string storyText = doc.DocumentNode.SelectSingleNode("//a[starts-with(@href,'/chatty/')]").Attributes["href"].Value;
         Match match = Regex.Match(storyText, @"([\d]+)");

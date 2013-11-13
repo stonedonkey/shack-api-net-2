@@ -136,6 +136,9 @@ public partial class chat_Default : System.Web.UI.Page
                 ParseReplies(ref post, reply.InnerHtml);
             }
 
+        // create empty list and stuff in comments property, get rid of the null -> [] string manip
+        post.comments = new List<ShackPost>();
+
         posts.Add(post);
 
     }
@@ -270,7 +273,7 @@ public partial class chat_Default : System.Web.UI.Page
 
         // TODO: I'm assuming squeegy is placing an array of posts in the <comments>  part of XML, if so that explains
         //       the blank array in his json output, for now I'm going to fake mimic this.
-        jsonPosts = jsonPosts.Replace("null", "[]");
+        //jsonPosts = jsonPosts.Replace("null", "[]");
 
         Response.Write(jsonPosts);
     }

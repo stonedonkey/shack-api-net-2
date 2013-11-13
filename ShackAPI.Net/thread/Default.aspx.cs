@@ -289,16 +289,16 @@ public partial class _Default : System.Web.UI.Page
 
                 GetFullPost(ref sp);
 
-                //if (sp.comments == null)
-                 //   sp.comments = new List<ShackPost>();  // don't allow null posts to go in, empty to match squeegy
+                if (sp.comments == null)
+                    sp.comments = new List<ShackPost>();  // don't allow null posts to go in, empty to match squeegy
 
                 holdpost.comments.Add(sp);
 
             }
             else
             {
-                //if (sp.comments == null)
-                 //   sp.comments = new List<ShackPost>();
+                if (sp.comments == null)
+                    sp.comments = new List<ShackPost>();
 
                 posts.Add(sp);
                 GetFullPost(ref sp);
@@ -456,7 +456,7 @@ public partial class _Default : System.Web.UI.Page
 
         // TODO: I'm assuming squeegy is placing an array of posts in the <comments>  part of XML, if so that explains
         //       the blank array in his json output, for now I'm going to fake mimic this.
-        jsonPosts = jsonPosts.Replace("null", "[]");
+        //jsonPosts = jsonPosts.Replace("null", "[]");
 
         Response.Write(jsonPosts);
     }

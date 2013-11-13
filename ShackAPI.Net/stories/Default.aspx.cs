@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -89,7 +89,11 @@ public partial class stories_Default : System.Web.UI.Page
 
         try
         {
-            store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+            if (doc.DocumentNode.SelectNodes("//div[@class='root']").Count > 1) {
+                store.thread_id = "";
+            } else {
+                store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+            }
         }
         catch
         {
@@ -163,7 +167,11 @@ public partial class stories_Default : System.Web.UI.Page
 
             try
             {
-                store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+                if (doc.DocumentNode.SelectNodes("//div[@class='root']").Count > 1) {
+                    store.thread_id = "";
+                } else {
+                    store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+                }
             }
             catch
             {

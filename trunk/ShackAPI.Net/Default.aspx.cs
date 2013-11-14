@@ -91,7 +91,6 @@ namespace ShackAPI
                 }
                 if (!shackHTML.Contains("/user/shackapifix/posts")) // if we lose session we have to reclaim it
                 {
-                  
                     HTTPManager.SetShackUserContext();
                     client.Cookies = ShackUserContext.Current.CookieContainer;
                     shackHTML = client.DownloadString(url);
@@ -139,7 +138,7 @@ namespace ShackAPI
                 foreach (HtmlNode post in doc.DocumentNode.SelectNodes("//div[starts-with(@class,'root')]"))
                     ParsePost(post.InnerHtml);
 
-            pageEnd = DateTime.Now.TimeOfDay.TotalMilliseconds; 
+            pageEnd = DateTime.Now.TimeOfDay.TotalMilliseconds;
 
             if (outputFormat == OutputFormats.XML)
                 ServePageAsXML();
@@ -233,6 +232,9 @@ namespace ShackAPI
             sp.last_reply_id = last_reply_id.ToString();
             last_reply_id = 0; // reset value for next run through
 
+            // create empty list and stuff in comments property, get rid of the null -> [] string manip
+            sp.comments = new List<ShackPost>();
+
             // end last post parsing
 
             posts.Add(sp);
@@ -297,7 +299,6 @@ namespace ShackAPI
 
             writer.WriteEndElement();
 
-            
             writer.WriteEndDocument();
 
             writer.Flush();
@@ -331,7 +332,7 @@ namespace ShackAPI
 
             // TODO: I'm assuming squeegy is placing an array of posts in the <comments>  part of XML, if so that explains
             //       the blank array in his json output, for now I'm going to fake mimic this.
-            jsonPosts = jsonPosts.Replace("null", "[]");
+            //jsonPosts = jsonPosts.Replace("null", "[]");
 
             Response.Write(jsonPosts);
         }

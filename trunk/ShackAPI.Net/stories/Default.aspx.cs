@@ -89,10 +89,16 @@ public partial class stories_Default : System.Web.UI.Page
 
         try
         {
-            if (doc.DocumentNode.SelectNodes("//div[@class='root']").Count > 1) {
-                store.thread_id = "";
+            var threadNodes = doc.DocumentNode.SelectNodes("//div[contains(@class,'root')]");
+            if (threadNodes.Count == 1) {
+                // if there is only one root thread
+                // consider this a nuShack story with a single thread attached to the story
+                store.thread_id = Regex.Match(threadNodes[0].Id, @"\d+").Value;
             } else {
-                store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+                // if there is more than one (or none) nodes with class "root"
+                // this is a legacy story or a weekend confirmed story which have old school chatty's associated to them
+                // chatty can be grabbed via storyID
+                store.thread_id = "";
             }
         }
         catch
@@ -167,10 +173,16 @@ public partial class stories_Default : System.Web.UI.Page
 
             try
             {
-                if (doc.DocumentNode.SelectNodes("//div[@class='root']").Count > 1) {
-                    store.thread_id = "";
+                var threadNodes = doc.DocumentNode.SelectNodes("//div[contains(@class,'root')]");
+                if (threadNodes.Count == 1) {
+                    // if there is only one root thread
+                    // consider this a nuShack story with a single thread attached to the story
+                    store.thread_id = Regex.Match(threadNodes[0].Id, @"\d+").Value;
                 } else {
-                    store.thread_id = Regex.Match(doc.DocumentNode.SelectSingleNode("//div[@class='root']").Id, @"\d+").Value;
+                    // if there is more than one (or none) nodes with class "root"
+                    // this is a legacy story or a weekend confirmed story which have old school chatty's associated to them
+                    // chatty can be grabbed via storyID
+                    store.thread_id = "";
                 }
             }
             catch

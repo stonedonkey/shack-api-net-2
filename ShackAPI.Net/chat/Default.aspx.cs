@@ -74,9 +74,9 @@ public partial class chat_Default : System.Web.UI.Page
         post.date = doc.DocumentNode.SelectSingleNode("//div[@class='postdate']").InnerText;
 
         string preview = doc.DocumentNode.SelectSingleNode("//div[@class='postbody']").InnerHtml.Replace("\r\n", " ").Trim();
+        preview = Regex.Replace(preview, "(\r\n|\r|\n|\n\r)", "");
         preview = Regex.Replace(preview, "<span class=\"jt_spoiler\" onclick=\".*?\">(.*?)</span>", "_________");
         preview = Regex.Replace(preview, @"<(.|\n)*?>", "");
-        preview = Regex.Replace(preview, "(\r\n|\r|\n|\n\r)", "");
         post.preview = preview;
 
         string modmarker = doc.DocumentNode.SelectSingleNode("//div[starts-with(@class,'fullpost ')]").GetAttributeValue("class", "").ToString();

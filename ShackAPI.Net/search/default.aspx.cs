@@ -53,7 +53,7 @@ public partial class search_default : System.Web.UI.Page
 
         //searchTerms = "stonedonkey";
 
-        string url = String.Format("http://www.shacknews.com/search?chatty=1&type=4&chatty_terms={0}&chatty_user={1}&chatty_author={2}&chatty_filter=all&page={3}&result_sort=postdate_desc", Server.UrlEncode(searchTerms), Server.UrlEncode(filterByUser), Server.UrlEncode(filterByParentAuthor), page);
+        string url = String.Format("http://www.shacknews.com/search?chatty=1&type=4&chatty_term={0}&chatty_user={1}&chatty_author={2}&chatty_filter=all&page={3}&result_sort=postdate_desc", Server.UrlEncode(searchTerms), Server.UrlEncode(filterByUser), Server.UrlEncode(filterByParentAuthor), page);
 
 
 

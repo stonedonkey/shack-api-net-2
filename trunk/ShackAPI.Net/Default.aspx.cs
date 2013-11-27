@@ -159,9 +159,9 @@ namespace ShackAPI
             sp.body = doc.DocumentNode.SelectSingleNode("//div[@class='postbody']").InnerHtml.Replace("\r", "&#13;").Replace("\n", "").Replace("<br>", "<br />").Replace("return doSpoiler(event);", "this.className = '';");
 
             string preview = doc.DocumentNode.SelectSingleNode("//span[@class='oneline_body']").InnerHtml.Replace("\r\n", " ").Trim();
+            preview = Regex.Replace(preview, "(\r\n|\r|\n|\n\r)", " ");
             preview = Regex.Replace(preview, "<span class=\"jt_spoiler\" onclick=\".*?\">(.*?)</span>", "_________");
             preview = Regex.Replace(preview, @"<(.|\n)*?>", "");
-            preview = Regex.Replace(preview, "(\r\n|\r|\n|\n\r)", " ");
             sp.preview = preview;
 
             sp.date = doc.DocumentNode.SelectSingleNode("//div[@class='postdate']").InnerText.Trim();

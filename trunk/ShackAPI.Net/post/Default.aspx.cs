@@ -81,11 +81,11 @@ public partial class post_Default : System.Web.UI.Page
             c.Add("remember-login", "1");
 
             client.Cookies = cc;
-            string urlCookie = "http://www.shacknews.com/account/signin";
+            string urlCookie = "https://www.shacknews.com/account/signin";
             Byte[] webResponse = client.UploadValues(urlCookie, "POST", c);
             String result = Encoding.UTF8.GetString(webResponse);
 
-            if (!result.Contains("{\"status\":\"OK\""))
+            if (!result.Contains("{\"result\":{\"valid\":\"true\""))
             {
                 Response.Write("error_login_failed");
                 return;
@@ -126,7 +126,7 @@ public partial class post_Default : System.Web.UI.Page
             }
 
 
-        // submit shack message
+        // submit shack post
         try
         {
 
@@ -155,7 +155,7 @@ public partial class post_Default : System.Web.UI.Page
             else if (result != null && result.Contains("Please post something at least 5 characters long."))
                 Response.Write("error_post_at_least_5_characters");
             else
-                Response.Write("Message Sent!");
+                Response.Write("Post Sent!");
 
         }
         catch (Exception)

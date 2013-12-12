@@ -77,11 +77,11 @@ public partial class messages_read_Default : System.Web.UI.Page
             c.Add("remember-login", "1");
 
             client.Cookies = cc;
-            string urlCookie = "http://www.shacknews.com/account/signin";
+            string urlCookie = "https://www.shacknews.com/account/signin";
             Byte[] webResponse = client.UploadValues(urlCookie, "POST", c);
             String result = Encoding.UTF8.GetString(webResponse);
 
-            if (!result.Contains("{\"status\":\"OK\""))
+            if (!result.Contains("{\"result\":{\"valid\":\"true\""))
             {
                 Response.Write("error_login_failed");
                 return;

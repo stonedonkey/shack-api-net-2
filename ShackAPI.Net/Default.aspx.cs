@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using HtmlAgilityPack;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.IO;
 using System.Diagnostics;
@@ -12,6 +12,7 @@ using ICSharpCode.SharpZipLib.GZip;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO.Compression;
+using HtmlAgilityPack;
 
 namespace ShackAPI
 {
@@ -181,20 +182,22 @@ namespace ShackAPI
             HtmlNodeCollection replies = doc.DocumentNode.SelectNodes("//div[starts-with(@class,'oneline')]");
             sp.reply_count = (replies.Count - 1).ToString();
 
-            // need to determine the max replyid for last_reply_id // might be away to just do this with a query.. in selectnodes not sure.
-            foreach (var item in replies)
-            {
-                Match match = Regex.Match(item.InnerHtml, @"\?id=([\d]*)");
+            int last_reply_id = doc.DocumentNode.SelectNodes("//a[starts-with(@onclick,'return')]").Max(a => Convert.ToInt32(a.GetAttributeValue("href", "?id=0").Substring(4)));
 
-                if (match.Success)
-                {
-                    int id = int.Parse(match.Groups[1].ToString());
-                    if (last_reply_id < id)
-                        last_reply_id = id;
+            //// need to determine the max replyid for last_reply_id // might be away to just do this with a query.. in selectnodes not sure.
+            //foreach (var item in replies)
+            //{
+            //    Match match = Regex.Match(item.InnerHtml, @"\?id=([\d]*)");
 
-                }
+            //    if (match.Success)
+            //    {
+            //        int id = int.Parse(match.Groups[1].ToString());
+            //        if (last_reply_id < id)
+            //            last_reply_id = id;
 
-            }
+            //    }
+
+            //}
 
             // create the list of participates for this thread
             HtmlNodeCollection usernames = doc.DocumentNode.SelectNodes("//span[starts-with(@class,'oneline_user')]");

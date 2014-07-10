@@ -48,8 +48,8 @@ public partial class Stories : System.Web.UI.Page
         //try
         //{
         //    // get the number of pages for this story
-        if (doc.DocumentNode.SelectNodes("//div[starts-with(@class,'story')]") != null)
-            foreach (HtmlNode post in doc.DocumentNode.SelectNodes("//div[starts-with(@class,'story')]"))
+        if (doc.DocumentNode.SelectNodes("//div[starts-with(@class,'article_copy')]") != null)
+            foreach (HtmlNode post in doc.DocumentNode.SelectNodes("//div[starts-with(@class,'article_copy')]"))
                 ParseStory(post.InnerHtml);
 
         //}
@@ -73,11 +73,11 @@ public partial class Stories : System.Web.UI.Page
         doc.LoadHtml(node);
 
         ShackStory store = new ShackStory();
-        store.name = doc.DocumentNode.SelectSingleNode("//h1|//h2").InnerText;
+        store.name = doc.DocumentNode.SelectSingleNode("//h2[@class='article_title']").InnerText;
         // get date of story
         try
         {
-            string date = doc.DocumentNode.SelectSingleNode("//span[@class='byline']").InnerText;
+            string date = doc.DocumentNode.SelectSingleNode("//span[@class='author']").InnerText;
             date = date.Substring(date.IndexOf(",", 0) + 1).Trim();
             store.date = date;
         }
@@ -95,8 +95,8 @@ public partial class Stories : System.Web.UI.Page
 
         try
         {
-            string url = doc.DocumentNode.SelectSingleNode("//div[contains(@class,'small-bubble')]//a").Attributes["href"].Value;
-            store.url = "http://www.shacknews.com" + doc.DocumentNode.SelectSingleNode("//div[contains(@class,'small-bubble')]//a").Attributes["href"].Value;
+            string url = doc.DocumentNode.SelectSingleNode("//a[@class='more']").Attributes["href"].Value;
+            store.url = "http://www.shacknews.com" + url;
 
             match = Regex.Match(node, @"article/(\d*)/", RegexOptions.IgnoreCase);
             if (match.Success)
@@ -107,11 +107,11 @@ public partial class Stories : System.Web.UI.Page
         }
         catch { } // failed getting url
 
-        store.body = doc.DocumentNode.SelectSingleNode("//div[@class='summary']").InnerHtml.Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
+        store.body = doc.DocumentNode.SelectSingleNode("//div[@class='border-graph']//p").InnerHtml.Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
         store.body = store.body.Replace("<script type=\"text/javascript\">", "<script type=\"text/javascript\"><![CDATA[");
         store.body = store.body.Replace("</script>", "]]></script>");
 
-        store.preview = doc.DocumentNode.SelectSingleNode("//div[@class='summary']").InnerText.Trim();
+        store.preview = store.body;
 
         store.thread_id = "";
 

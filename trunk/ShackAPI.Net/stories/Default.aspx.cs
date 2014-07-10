@@ -126,6 +126,7 @@ public partial class stories_Default : System.Web.UI.Page
 
             using (WebClientExtended client = new WebClientExtended())
             {
+
                 client.Method = "GET";
                 if (ShackUserContext.Current.CookieContainer == null)
                     HTTPManager.SetShackUserContext();
@@ -151,16 +152,16 @@ public partial class stories_Default : System.Web.UI.Page
 
             ShackStory store = new ShackStory();
 
-            store.name = doc.DocumentNode.SelectSingleNode("//div[@id='article']//h1").InnerText;
+            store.name = doc.DocumentNode.SelectSingleNode("//div[@class='article']//h1").InnerText;
 
-            store.date = doc.DocumentNode.SelectSingleNode("//span[@class='vitals']").InnerText.Trim();
+            store.date = doc.DocumentNode.SelectSingleNode("//span[@class='author']").InnerText.Trim();
             store.date = store.date.Substring(store.date.IndexOf(", ") + 2);
 
-            store.body = doc.DocumentNode.SelectSingleNode("//div[@id='article_body']").InnerHtml.Trim().Replace("\r", "").Replace("\n", "").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
+            store.body = doc.DocumentNode.SelectSingleNode("//div[@class='article']//p").InnerHtml.Trim().Replace("\r", "").Replace("\n", "").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
             store.body = store.body.Replace("<script type=\"text/javascript\">", "<script type=\"text/javascript\"><![CDATA[");
             store.body = store.body.Replace("</script>", "]]></script>");
 
-            store.preview = doc.DocumentNode.SelectSingleNode("//div[@id='article_body']").InnerText.Trim();
+            store.preview = store.body;
 
             try
             {
@@ -237,11 +238,11 @@ public partial class stories_Default : System.Web.UI.Page
             writer.Close();
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
 
-            throw new Exception("Error parsing this story id");
+            throw new Exception("Error parsing this story id" + ex.InnerException);
 
 
         }

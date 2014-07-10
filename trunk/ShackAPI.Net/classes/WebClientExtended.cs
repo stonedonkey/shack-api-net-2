@@ -42,6 +42,7 @@ public class WebClientExtended : WebClient
         myRequest = (HttpWebRequest)base.GetWebRequest(address);
         myRequest.Method = this.Method;
         myRequest.CookieContainer = Cookies;
+        myRequest.AllowAutoRedirect = true;
 
         CredentialCache cache = new CredentialCache();
         if ((login != null && login.Length > 0) && password != null && password.Length > 0)

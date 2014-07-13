@@ -67,20 +67,23 @@ public partial class stories_Default : System.Web.UI.Page
         ShackStory store = new ShackStory();
 
 
-        store.name = doc.DocumentNode.SelectSingleNode("//div[@id='article']//h1").InnerText;
+        store.name = doc.DocumentNode.SelectSingleNode("//div[@class='article']//h1").InnerText;
 
-        store.date = doc.DocumentNode.SelectSingleNode("//span[@class='vitals']").InnerText.Trim();
+        store.date = doc.DocumentNode.SelectSingleNode("//span[@class='author']").InnerText.Trim();
         store.date = store.date.Substring(store.date.IndexOf(", ") + 2);
 
-        store.body = doc.DocumentNode.SelectSingleNode("//div[@id='article_body']").InnerHtml.Trim().Replace("\r", "").Replace("\n", "").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
-        store.body = store.body.Replace("<script type=\"text/javascript\">", "<script type=\"text/javascript\"><![CDATA[");
+        store.body = doc.DocumentNode.SelectSingleNode("//div[@class='article']").InnerHtml.Trim().Replace("\r", "").Replace("\n", "").Replace("&nbsp;", " ").Replace("&", "&amp;").Replace("<br>", "<br />").Replace("<p><p>", "<p>");
+        store.body = store.body.Replace("<h1>", "<h1 style=\"display: none;\">");
+        store.body = store.body.Replace("<script type=\"text/javascript\"", "<script type=\"text/javascript\"><![CDATA[");
         store.body = store.body.Replace("</script>", "]]></script>");
+        store.body = store.body.Replace("<a href=\"#comments\">", "<a href=\"#comments\" style=\"display: none;\">");
+        store.body += "<style type=\"text/css\">.author, .addthis_sharing_toolbox { display: none; }</style>";
 
-        store.preview = doc.DocumentNode.SelectSingleNode("//div[@id='article_body']").InnerText.Trim();
+        store.preview = doc.DocumentNode.SelectSingleNode("//div[@class='article']//p").InnerText.Trim();
 
         try
         {
-            store.comment_count = doc.DocumentNode.SelectSingleNode("//div[@id='commenttools']//a[2]").InnerText.Replace(" Comments", "");
+            store.comment_count = doc.DocumentNode.SelectSingleNode("//div[@id='commenttools']//a[2]").InnerText.Replace(" Comments", "").Replace(" Comment", "");
         }
         catch
         {
